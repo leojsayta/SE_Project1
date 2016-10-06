@@ -1,5 +1,8 @@
 package edu.unca.cl373.jatyas.flowChart;
 
+
+import java.util.*;
+
 import csci348.drawings.Drawing;
 
 public class Line {
@@ -8,6 +11,8 @@ public class Line {
 	private int start_Y;
 	private int end_X;
 	private int end_Y;
+	
+	private ArrayList<Point> points;
 	
 	private Drawing canvas;
 	
@@ -18,6 +23,8 @@ public class Line {
 		this.end_Y = end_Y;
 		
 		this.canvas = canvas;
+		
+		this.points = new ArrayList<Point>();
 		
 		writeLine();
 	}
@@ -38,6 +45,7 @@ public class Line {
 			
 			if (zeroSlope && infiniteSlope) {	// point
 				this.canvas.showPoint(this.start_X, this.start_Y);
+				this.points.add(new Point(this.start_X, this.start_Y));
 			}
 			else if (zeroSlope) {	// horizontal line					
 				for (int x = this.start_X; x <= this.end_X; x++) {
