@@ -2,7 +2,7 @@ package edu.unca.cl373.jatyas.flowChart;
 
 import csci348.drawings.Drawing;
 
-public class Box {
+public class Box extends Element {
 	
 	private int start_X;
 	private int start_Y;
@@ -14,7 +14,8 @@ public class Box {
 	private Line y1;
 	private Line y2;
 	
-	public Box(int start_X, int start_Y, int end_X, int end_Y) {
+	public Box(int start_X, int start_Y, int end_X, int end_Y, Drawing canvas) {
+		super(canvas);
 		this.start_X = start_X;
 		this.start_Y = start_Y;
 		this.end_X = end_X;
