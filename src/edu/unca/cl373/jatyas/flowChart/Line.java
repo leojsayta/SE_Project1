@@ -7,28 +7,26 @@ import csci348.drawings.Drawing;
 
 public class Line extends Element {
 	
-	private int start_X;
-	private int start_Y;
-	private int end_X;
-	private int end_Y;
+	private Point startPoint;
+	private Point endPoint;
 	
 	private ArrayList<Point> points;
 	
-	public Line(int start_X, int start_Y, int end_X, int end_Y, Drawing canvas) {
+	public Line(Point startPoint, Point endPoint, Drawing canvas) {
 		super(canvas);
 		
-		this.start_X = start_X;
-		this.start_Y = start_Y;
-		this.end_X = end_X;
-		this.end_Y = end_Y;
+		this.startPoint = startPoint;
+		this.endPoint = endPoint;
 		
 		this.points = new ArrayList<Point>();
 	}
 	
+	@Override
 	public void draw(){
-		writeLine();
+		if (isCorrect()) writeLine();
 	}
 	
+	@Override
 	public void erase(){
 		eraseLine();
 	}
@@ -36,37 +34,32 @@ public class Line extends Element {
 	private boolean writeLine() {
 		try {
 			
-			double deltaX = getEnd_X() - getStart_X();
-			double deltaY = getEnd_Y() - getStart_Y();
+			double deltaX = getEndPoint().getX_coord() - getStartPoint().getX_coord();
+			double deltaY = getEndPoint().getY_coord() - getStartPoint().getY_coord();
 			
 			boolean zeroSlope = (0.0 <= Math.abs(deltaY)) && (Math.abs(deltaY) < 0.001);
 			boolean infiniteSlope = (0.0 <= Math.abs(deltaX)) && (Math.abs(deltaX) < 0.001);
 			
-			if (zeroSlope && infiniteSlope) {	// point
-				Point p = new Point(getStart_X(), getStart_Y(), getCanvas());
-				p.draw();
-				this.points.add(p);
-			}
-			else if (zeroSlope) {	// horizontal line					
-				for (int x = getStart_X(); x <= getEnd_X(); x++) {
-					Point p = new Point(x, getStart_Y(), getCanvas());
+			if (zeroSlope) {	// horizontal line					
+				for (int x = getStartPoint().getX_coord(); x <= getEndPoint().getX_coord(); x++) {
+					Point p = new Point(x, getStartPoint().getY_coord(), getCanvas());
 					p.draw();
 					this.points.add(p);
 				}
 			}
 			else if (infiniteSlope) {	// vertical line
-				for (int y = getStart_Y(); y <= getEnd_Y(); y++) {
-					Point p = new Point(getStart_X(), y, getCanvas());
+				for (int y = getStartPoint().getY_coord(); y <= getEndPoint().getY_coord(); y++) {
+					Point p = new Point(getStartPoint().getX_coord(), y, getCanvas());
 					p.draw();
 					this.points.add(p);
 				}
 			}
 			else {	// other lines
-				int y = getStart_Y();
+				int y = getStartPoint().getY_coord();
 				double slope = getSlope(deltaX, deltaY);
 				
-				for (int x = getStart_X(); x <= getEnd_X(); x++) {
-					y = (int) (x*slope + getStart_Y());
+				for (int x = getStartPoint().getX_coord(); x <= getEndPoint().getX_coord(); x++) {
+					y = (int) (x*slope + getStartPoint().getY_coord());
 					Point p = new Point(x, y, getCanvas());
 					p.draw();
 					this.points.add(p);
@@ -104,40 +97,87 @@ public class Line extends Element {
 		return deltaY / deltaX;
 	}
 
-	public int getStart_X() {
-		return start_X;
+	public Point getStartPoint() {
+		return startPoint;
 	}
 
-	private void setStart_X(int start_X) {
-		this.start_X = start_X;
+	private void setStartPoint(Point start) {
+		this.startPoint = start;
 	}
 
-	public int getStart_Y() {
-		return start_Y;
+	public Point getEndPoint() {
+		return endPoint;
 	}
 
-	private void setStart_Y(int start_Y) {
-		this.start_Y = start_Y;
+	private void setEndPoint(Point end) {
+		this.endPoint = end;
 	}
 
-	public int getEnd_X() {
-		return end_X;
+	public ArrayList<Point> getPoints() {
+		return points;
 	}
 
-	private void setEnd_X(int end_X) {
-		this.end_X = end_X;
+	private void setPoints(ArrayList<Point> points) {
+		this.points = points;
 	}
 
-	public int getEnd_Y() {
-		return end_Y;
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((endPoint == null) ? 0 : endPoint.hashCode());
+		result = prime * result + ((points == null) ? 0 : points.hashCode());
+		result = prime * result + ((startPoint == null) ? 0 : startPoint.hashCode());
+		return result;
 	}
 
-	private void setEnd_Y(int end_Y) {
-		this.end_Y = end_Y;
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj) {
+			return true;
+		}
+		if (obj == null) {
+			return false;
+		}
+		if (!(obj instanceof Line)) {
+			return false;
+		}
+		Line other = (Line) obj;
+		if (endPoint == null) {
+			if (other.endPoint != null) {
+				return false;
+			}
+		} else if (!endPoint.equals(other.endPoint)) {
+			return false;
+		}
+		if (points == null) {
+			if (other.points != null) {
+				return false;
+			}
+		} else if (!points.equals(other.points)) {
+			return false;
+		}
+		if (startPoint == null) {
+			if (other.startPoint != null) {
+				return false;
+			}
+		} else if (!startPoint.equals(other.startPoint)) {
+			return false;
+		}
+		return true;
 	}
 
-	
-	
-	
+	@Override
+	public boolean isCorrect() {
+		if (getStartPoint().equals(null) || getEndPoint().equals(null))
+			return false;
+		
+		if (getStartPoint().equals(getEndPoint()))
+		{
+			return false;
+		}
+		
+		return true;
+	}
 
 }

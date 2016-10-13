@@ -6,13 +6,17 @@ public abstract class Element {
 	
 	private Drawing canvas = null;
 	
-	public Element(Drawing canvas) {
+	protected Element() {}
+	
+	protected Element(Drawing canvas) {
 		this.canvas = canvas;
 	}
 	
-	public void draw(){};
+	public abstract void draw();
 	
-	public void erase(){};
+	public abstract void erase();
+	
+	public abstract boolean isCorrect();
 	
 	public Drawing getCanvas() {
 		return canvas;
@@ -21,4 +25,13 @@ public abstract class Element {
 	private void setCanvas(Drawing canvas) {
 		this.canvas = canvas;
 	}
+
+	@Override
+	public abstract int hashCode();
+
+	@Override
+	public abstract boolean equals(Object obj);
+	
 }
+
+
