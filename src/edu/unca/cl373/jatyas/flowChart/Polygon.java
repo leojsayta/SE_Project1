@@ -17,7 +17,9 @@ public class Polygon extends Element {
 	
 	@Override
 	public void draw() {
-		if (!isCorrect()) return;
+		if (!isCorrect()) {
+			return;
+		}
 		
 		for (Line pLine : getPolyLines()) {
 			pLine.draw();
@@ -81,7 +83,7 @@ public class Polygon extends Element {
 		for (int i = 0; i < numLines - 1; i++) {
 			if (!(pLines.get(i).isCorrect() && pLines.get(i + 1).isCorrect()))
 				return false;
-			if (pLines.get(i).getEndPoint().equals(pLines.get(i + 1).getStartPoint()))
+			if (!(pLines.get(i).getEndPoint().equals(pLines.get(i + 1).getStartPoint())))
 				return false;
 		}
 		
