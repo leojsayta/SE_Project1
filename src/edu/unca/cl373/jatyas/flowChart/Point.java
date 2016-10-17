@@ -16,17 +16,23 @@ public class Point extends Element {
 	}
 	
 	@Override
-	public void draw() {
+	public boolean draw() {
 		if (!Objects.isNull(getCanvas())){
 			getCanvas().showPoint(getX_coord(), getY_coord());
+			return true;
 		}
+		else 
+			return false;
 	}
 	
 	@Override
-	public void erase() {
+	public boolean erase() {
 		if (!Objects.isNull(getCanvas())){
 			getCanvas().hidePoint(getX_coord(), getY_coord());
+			return true;
 		}
+		else 
+			return false;
 	}
 
 	public int getX_coord() {

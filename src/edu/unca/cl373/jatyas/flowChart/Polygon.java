@@ -1,36 +1,38 @@
 package edu.unca.cl373.jatyas.flowChart;
 
-import java.util.ArrayList;
+import java.util.*;
 
 import csci348.drawings.Drawing;
 
 public class Polygon extends Element {
 	
-	private ArrayList<Line> polyLines;
+	private List<Line> polyLines;
 	
 	public static final int MinSideNumber = 3; 
 
-	public Polygon(ArrayList<Line> lines, Drawing canvas) {
+	public Polygon(List<Line> lines, Drawing canvas) {
 		super(canvas);
 		this.polyLines = lines;
 	}
 	
 	@Override
-	public void draw() {
-		if (!isCorrect()) {
-			return;
-		}
+	public boolean draw() {
+		if (!isCorrect())
+			return false;
 		
 		for (Line pLine : getPolyLines()) {
 			pLine.draw();
 		}
+		
+		return true;
 	}
 
 	@Override
-	public void erase() {
+	public boolean erase() {
 		for (Line pLine : getPolyLines()) {
 			pLine.erase();
 		}
+		return true;
 	}
 
 	@Override
@@ -63,18 +65,18 @@ public class Polygon extends Element {
 		return true;
 	}
 
-	public ArrayList<Line> getPolyLines() {
+	public List<Line> getPolyLines() {
 		return polyLines;
 	}
 
-	private void setPolyLines(ArrayList<Line> polyLines) {
+	private void setPolyLines(List<Line> polyLines) {
 		this.polyLines = polyLines;
 	}
 
 	@Override
 	public boolean isCorrect() {
 		
-		ArrayList<Line> pLines = getPolyLines();
+		List<Line> pLines = getPolyLines();
 		int numLines = pLines.size();
 		
 		if (pLines.isEmpty() || (numLines < Polygon.MinSideNumber))

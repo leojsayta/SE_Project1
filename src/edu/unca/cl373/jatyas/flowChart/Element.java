@@ -12,9 +12,9 @@ public abstract class Element {
 		this.canvas = canvas;
 	}
 	
-	public abstract void draw();
+	public abstract boolean draw();
 	
-	public abstract void erase();
+	public abstract boolean erase();
 	
 	public abstract boolean isCorrect();
 	

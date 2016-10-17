@@ -1,6 +1,5 @@
 package edu.unca.cl373.jatyas.flowChart;
 
-
 import java.util.*;
 
 import csci348.drawings.Drawing;
@@ -9,8 +8,7 @@ public class Line extends Element {
 	
 	private Point startPoint;
 	private Point endPoint;
-	
-	private ArrayList<Point> points;
+	private List<Point> points;
 	
 	public Line(Point startPoint, Point endPoint, Drawing canvas) {
 		super(canvas);
@@ -22,50 +20,78 @@ public class Line extends Element {
 	}
 	
 	@Override
-	public void draw(){
-		if (isCorrect()) writeLine();
+	public boolean draw(){
+		if (isCorrect()) 
+			if (getPoints().isEmpty())
+				if (createPoints())
+					return drawLine();
+				else
+					return false;
+			else
+				return drawLine();
+		else 
+			return false;
 	}
 	
 	@Override
-	public void erase(){
-		eraseLine();
+	public boolean erase(){
+		return eraseLine();
 	}
 	
-	private boolean writeLine() {
+	private boolean createPoints() {
 		try {
-			
-			double deltaX = getEndPoint().getX_coord() - getStartPoint().getX_coord();
-			double deltaY = getEndPoint().getY_coord() - getStartPoint().getY_coord();
-			
-			boolean zeroSlope = (0.0 <= Math.abs(deltaY)) && (Math.abs(deltaY) < 0.001);
-			boolean infiniteSlope = (0.0 <= Math.abs(deltaX)) && (Math.abs(deltaX) < 0.001);
-			
-			if (zeroSlope) {	// horizontal line					
-				for (int x = getStartPoint().getX_coord(); x <= getEndPoint().getX_coord(); x++) {
-					Point p = new Point(x, getStartPoint().getY_coord(), getCanvas());
-					p.draw();
-					this.points.add(p);
+
+			int deltaX = getEndPoint().getX_coord() - getStartPoint().getX_coord();
+			int deltaY = getEndPoint().getY_coord() - getStartPoint().getY_coord();
+
+			boolean zeroSlope = (deltaY == 0);			// okay b/c using integers which can be exactly expressed
+			boolean infiniteSlope = (deltaX == 0);		// okay b/c using integers which can be exactly expressed
+
+			if (infiniteSlope) { 	// vertical line
+				if (deltaY > 0) {			// points North
+					for (int y = getStartPoint().getY_coord(); y <= getEndPoint().getY_coord(); y++) {
+						this.points.add(new Point(getStartPoint().getX_coord(), y, getCanvas()));
+					}
 				}
-			}
-			else if (infiniteSlope) {	// vertical line
-				for (int y = getStartPoint().getY_coord(); y <= getEndPoint().getY_coord(); y++) {
-					Point p = new Point(getStartPoint().getX_coord(), y, getCanvas());
-					p.draw();
-					this.points.add(p);
+				else {						// points South
+					for (int y = getStartPoint().getY_coord(); y >= getEndPoint().getY_coord(); y--) {
+						this.points.add(new Point(getStartPoint().getX_coord(), y, getCanvas()));
+					}
 				}
-			}
-			else {	// other lines
+			} 
+			else {					// non-vertical lines
 				int y = getStartPoint().getY_coord();
 				double slope = getSlope(deltaX, deltaY);
 				
-				for (int x = getStartPoint().getX_coord(); x <= getEndPoint().getX_coord(); x++) {
-					y = (int) (x*slope + getStartPoint().getY_coord());
-					Point p = new Point(x, y, getCanvas());
-					p.draw();
-					this.points.add(p);
+				if (deltaX > 0) {				// direction East
+					for (int x = getStartPoint().getX_coord(); x <= getEndPoint().getX_coord(); x++) {
+						if (!zeroSlope) {				// NOT horizontal line
+							y = (int) ((x -  getStartPoint().getX_coord())* slope + getStartPoint().getY_coord());	
+						}
+						this.points.add(new Point(x, y, getCanvas()));
+					}
+				}
+				else {							// direction West
+					for (int x = getStartPoint().getX_coord(); x >= getEndPoint().getX_coord(); x--) {
+						if (!zeroSlope) {				// NOT horizontal line
+							y = (int) ((x -  getStartPoint().getX_coord())* slope + getStartPoint().getY_coord());
+						}
+						this.points.add(new Point(x, y, getCanvas()));
+					}
 				}
 			}
-			
+			return true;
+		} catch (Exception e) {
+			return false;
+		}
+	}
+	
+	private boolean drawLine() {
+		try {
+			for (Point p : this.points) {
+				p.draw();
+			}
+
 			return true;
 		} catch (Exception e) {
 			return false;
@@ -84,17 +110,17 @@ public class Line extends Element {
 		}
 	}
 	
-	private double getSlope(double deltaX, double deltaY) {
+	private double getSlope(int deltaX, int deltaY) {
 
-		if (0.0 < Math.abs(deltaY) && Math.abs(deltaY) < 0.001) {
+		if (deltaY == 0) {
 			return 0.0;
 		}
 
-		if (0.0 < Math.abs(deltaX) && Math.abs(deltaX) < 0.001) {
+		if (deltaX == 0) {
 			throw new NumberFormatException("Infinite slope.");
 		}
 
-		return deltaY / deltaX;
+		return (double)deltaY / (double)deltaX;
 	}
 
 	public Point getStartPoint() {
@@ -113,11 +139,11 @@ public class Line extends Element {
 		this.endPoint = end;
 	}
 
-	public ArrayList<Point> getPoints() {
+	public List<Point> getPoints() {
 		return points;
 	}
 
-	private void setPoints(ArrayList<Point> points) {
+	private void setPoints(List<Point> points) {
 		this.points = points;
 	}
 
