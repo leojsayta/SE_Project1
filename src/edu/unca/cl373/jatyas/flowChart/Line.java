@@ -38,6 +38,19 @@ public class Line extends Element {
 		return eraseLine();
 	}
 	
+	@Override
+	public boolean isCorrect() {
+		if (getStartPoint().equals(null) || getEndPoint().equals(null))
+			return false;
+		
+		if (getStartPoint().equals(getEndPoint()))
+		{
+			return false;
+		}
+		
+		return true;
+	}
+
 	private boolean createPoints() {
 		try {
 
@@ -193,17 +206,5 @@ public class Line extends Element {
 		return true;
 	}
 
-	@Override
-	public boolean isCorrect() {
-		if (getStartPoint().equals(null) || getEndPoint().equals(null))
-			return false;
-		
-		if (getStartPoint().equals(getEndPoint()))
-		{
-			return false;
-		}
-		
-		return true;
-	}
-
+	
 }

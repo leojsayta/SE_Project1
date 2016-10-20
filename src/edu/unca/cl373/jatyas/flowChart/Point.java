@@ -35,6 +35,11 @@ public class Point extends Element {
 			return false;
 	}
 
+	@Override
+	public boolean isCorrect() {
+		return true;
+	}
+	
 	public int getX_coord() {
 		return x_coord;
 	}
@@ -80,10 +85,4 @@ public class Point extends Element {
 		}
 		return true;
 	}
-
-	@Override
-	public boolean isCorrect() {
-		return true;
-	}
-	
 }

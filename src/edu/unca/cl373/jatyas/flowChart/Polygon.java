@@ -8,13 +8,41 @@ public class Polygon extends Element {
 	
 	private List<Line> polyLines;
 	
-	public static final int MinSideNumber = 3; 
+	public static final int MIN_NUMBER_SIDES = 3;
+//	public static final int MIN_SIDE_LENGTH = 1;
+
+	/*public static final String ERROR_SIDE_NUM = "The number of sides must be greater than or equal to " + String.valueOf(MIN_NUMBER_SIDES) + ".";
+	public static final String ERROR_SIDE_LENGTH = "The length of each side must must be greater than or equal to " + String.valueOf(MIN_SIDE_LENGTH) + ".";*/
+	
 
 	public Polygon(List<Line> lines, Drawing canvas) {
 		super(canvas);
+		
 		this.polyLines = lines;
 	}
 	
+	/*public Polygon(Point start, int numSides, int sideLength, Drawing canvas) {
+		super(canvas);
+		
+		if (numSides % 2 > 0) {
+			throw new IllegalArgumentException(ERROR_SIDE_NUM);
+		}
+		
+		if (sideLength >= 1 || sideLength <= -1) {
+			throw new IllegalArgumentException(ERROR_SIDE_LENGTH);
+		}
+		
+		createLines(start, numSides, sideLength);
+	}*/
+	
+	public List<Line> getPolyLines() {
+		return polyLines;
+	}
+
+	private void setPolyLines(List<Line> polyLines) {
+		this.polyLines = polyLines;
+	}
+
 	@Override
 	public boolean draw() {
 		if (!isCorrect())
@@ -35,6 +63,34 @@ public class Polygon extends Element {
 		return true;
 	}
 
+	@Override
+	public boolean isCorrect() {
+		
+		List<Line> pLines = getPolyLines();
+		int numLines = pLines.size();
+		
+		if (pLines.isEmpty() || (numLines < Polygon.MIN_NUMBER_SIDES))
+			return false;
+		
+		for (int i = 0; i < numLines - 1; i++) {
+			if (!(pLines.get(i).isCorrect() && pLines.get(i + 1).isCorrect()))
+				return false;
+			if (!(pLines.get(i).getEndPoint().equals(pLines.get(i + 1).getStartPoint())))
+				return false;
+		}
+		
+		if (!pLines.get(0).getStartPoint().equals(pLines.get(numLines - 1).getEndPoint()))
+			return false;
+		
+		return true;
+	}
+
+	/*private boolean createLines(Point start, int numSides, int sideLength){
+		
+		
+		return false;
+	}*/
+	
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -64,35 +120,4 @@ public class Polygon extends Element {
 		}
 		return true;
 	}
-
-	public List<Line> getPolyLines() {
-		return polyLines;
-	}
-
-	private void setPolyLines(List<Line> polyLines) {
-		this.polyLines = polyLines;
-	}
-
-	@Override
-	public boolean isCorrect() {
-		
-		List<Line> pLines = getPolyLines();
-		int numLines = pLines.size();
-		
-		if (pLines.isEmpty() || (numLines < Polygon.MinSideNumber))
-			return false;
-		
-		for (int i = 0; i < numLines - 1; i++) {
-			if (!(pLines.get(i).isCorrect() && pLines.get(i + 1).isCorrect()))
-				return false;
-			if (!(pLines.get(i).getEndPoint().equals(pLines.get(i + 1).getStartPoint())))
-				return false;
-		}
-		
-		if (!pLines.get(0).getStartPoint().equals(pLines.get(numLines - 1).getEndPoint()))
-			return false;
-		
-		return true;
-	}
-
 }
