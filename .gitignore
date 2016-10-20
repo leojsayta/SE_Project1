@@ -1,3 +1,7 @@
 /bin/
 
 *.class
+/drawings/
+/.DS_Store
+/.metadata/
+/javadoc/
