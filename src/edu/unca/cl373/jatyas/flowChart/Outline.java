@@ -3,13 +3,13 @@ package edu.unca.cl373.jatyas.flowChart;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-import csci348.drawings.Drawing;
+import csci348.drawings.*;;
 
 public class Outline {
 
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
-		Drawing d = new Drawing();
+		Drawing d = new SimpleDrawing();
 		
 		Point p0 = new Point(25, 25, d);
 		Point p1 = new Point(75, 100, d);
