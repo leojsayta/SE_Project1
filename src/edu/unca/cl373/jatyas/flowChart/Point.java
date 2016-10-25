@@ -6,6 +6,7 @@ import csci348.drawings.Drawing;
 
 public class Point extends Element {
 	
+	
 	private int x_coord;
 	private int y_coord;
 	
@@ -16,23 +17,13 @@ public class Point extends Element {
 	}
 	
 	@Override
-	public boolean draw() {
-		if (!Objects.isNull(getCanvas())){
-			getCanvas().showPoint(getX_coord(), getY_coord());
-			return true;
-		}
-		else 
-			return false;
+	public void draw() {
+		getCanvas().showPoint(getX_coord(), getY_coord());
 	}
 	
 	@Override
-	public boolean erase() {
-		if (!Objects.isNull(getCanvas())){
-			getCanvas().hidePoint(getX_coord(), getY_coord());
-			return true;
-		}
-		else 
-			return false;
+	public void erase() {
+		getCanvas().hidePoint(getX_coord(), getY_coord());
 	}
 
 	@Override

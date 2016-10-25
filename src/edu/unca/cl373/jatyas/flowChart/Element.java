@@ -1,20 +1,30 @@
 package edu.unca.cl373.jatyas.flowChart;
 
+import java.util.Objects;
+import java.util.concurrent.CompletionException;
+
 import csci348.drawings.Drawing;
+import sun.net.www.ApplicationLaunchException;
 
 public abstract class Element {
+	
+	public static final String ERROR_DRAWING_CANVAS_IS_NULL = "The drawing canvas does not exist.";
 	
 	private Drawing canvas = null;
 	
 	protected Element() {}
 	
 	protected Element(Drawing canvas) {
+		if (!Objects.isNull(getCanvas())){
+			throw new NullPointerException(Element.ERROR_DRAWING_CANVAS_IS_NULL);
+		}
+		
 		this.canvas = canvas;
 	}
 	
-	public abstract boolean draw();
+	public abstract void draw() throws ApplicationLaunchException;
 	
-	public abstract boolean erase();
+	public abstract void erase();
 	
 	public abstract boolean isCorrect();
 	

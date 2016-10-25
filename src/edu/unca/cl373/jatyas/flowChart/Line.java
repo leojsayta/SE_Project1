@@ -1,14 +1,23 @@
 package edu.unca.cl373.jatyas.flowChart;
 
 import java.util.*;
+import java.util.concurrent.CompletionException;
 
 import csci348.drawings.Drawing;
 
 public class Line extends Element {
 	
+	public static final String ERROR_BAD_LINE_POINTS = "The points of the line are incorrectly formed.";
+
 	private Point startPoint;
 	private Point endPoint;
 	private List<Point> points;
+	
+	protected Line(Drawing canvas){
+		super(canvas);
+		
+		this.points = new ArrayList<Point>();
+	}
 	
 	public Line(Point startPoint, Point endPoint, Drawing canvas) {
 		super(canvas);
@@ -20,22 +29,22 @@ public class Line extends Element {
 	}
 	
 	@Override
-	public boolean draw(){
+	public void draw(){
 		if (isCorrect()) 
 			if (getPoints().isEmpty())
 				if (createPoints())
-					return drawLine();
+					drawLine();
 				else
-					return false;
+					throw new CompletionException(new Throwable(Line.ERROR_BAD_LINE_POINTS));
 			else
-				return drawLine();
+				drawLine();
 		else 
-			return false;
+			throw new CompletionException(new Throwable(Line.ERROR_BAD_LINE_POINTS));
 	}
 	
 	@Override
-	public boolean erase(){
-		return eraseLine();
+	public void erase(){
+		eraseLine();
 	}
 	
 	@Override
@@ -99,27 +108,23 @@ public class Line extends Element {
 		}
 	}
 	
-	private boolean drawLine() {
+	private void drawLine() {
 		try {
 			for (Point p : this.points) {
 				p.draw();
 			}
-
-			return true;
 		} catch (Exception e) {
-			return false;
+			throw new CompletionException(new Throwable(Line.ERROR_BAD_LINE_POINTS));
 		}
 	}
 	
-	private boolean eraseLine() {
+	private void eraseLine() {
 		try {
 			for (Point p : this.points) {
 				p.erase();
 			}
-
-			return true;
 		} catch (Exception e) {
-			return false;
+			throw new CompletionException(new Throwable(Line.ERROR_BAD_LINE_POINTS));
 		}
 	}
 	

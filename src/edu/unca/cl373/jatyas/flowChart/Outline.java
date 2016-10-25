@@ -3,7 +3,14 @@ package edu.unca.cl373.jatyas.flowChart;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-import csci348.drawings.*;;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.event.MouseListener;
+import java.awt.event.MouseEvent;
+
+import javax.swing.*;
+
+import csci348.drawings.*;
 
 public class Outline {
 

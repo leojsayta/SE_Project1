@@ -1,101 +1,91 @@
 package edu.unca.cl373.jatyas.flowChart;
 
 import java.util.*;
+import java.util.concurrent.CompletionException;
 
 import csci348.drawings.Drawing;
 
 public class Polygon extends Element {
 	
-	private List<Line> polyLines;
+	protected List<Line> borderLines;
 	
+	public static final int MIN_SIDE_LENGTH = 1;
+//	public static final int MAX_NUMBER_SIDES = 4;
 	public static final int MIN_NUMBER_SIDES = 3;
-//	public static final int MIN_SIDE_LENGTH = 1;
+//	public static final int NUMBER_SIDES = 4;
+	public static final String ERROR_MIN_SIDE_NUM = "The number of sides must be greater than or equal to "
+			+ String.valueOf(MIN_NUMBER_SIDES) + ".";
+	public static final String ERROR_SIDE_LENGTH = "The length of each side must must be greater than or equal to "
+			+ String.valueOf(MIN_SIDE_LENGTH) + ".";
+//	public static final String ERROR_MAX_SIDE_NUM = "The number of sides must be less than or equal to "
+//			+ String.valueOf(MAX_NUMBER_SIDES) + ".";
+//	public static final String ERROR_NUMBER_SIDES = "The number of sides must be less than or equal to "
+//			+ String.valueOf(NUMBER_SIDES) + ".";
+	public static final String ERROR_BAD_BORDERLINES_STATE = "The border lines of the shape are incorrectly formed.";
 
-	/*public static final String ERROR_SIDE_NUM = "The number of sides must be greater than or equal to " + String.valueOf(MIN_NUMBER_SIDES) + ".";
-	public static final String ERROR_SIDE_LENGTH = "The length of each side must must be greater than or equal to " + String.valueOf(MIN_SIDE_LENGTH) + ".";*/
+	protected Polygon(Drawing canvas){
+		super(canvas);
+	}
 	
-
 	public Polygon(List<Line> lines, Drawing canvas) {
 		super(canvas);
 		
-		this.polyLines = lines;
+		this.borderLines = lines;
 	}
 	
-	/*public Polygon(Point start, int numSides, int sideLength, Drawing canvas) {
-		super(canvas);
-		
-		if (numSides % 2 > 0) {
-			throw new IllegalArgumentException(ERROR_SIDE_NUM);
-		}
-		
-		if (sideLength >= 1 || sideLength <= -1) {
-			throw new IllegalArgumentException(ERROR_SIDE_LENGTH);
-		}
-		
-		createLines(start, numSides, sideLength);
-	}*/
-	
-	public List<Line> getPolyLines() {
-		return polyLines;
+	public List<Line> getBorderLines() {
+		return borderLines;
 	}
 
-	private void setPolyLines(List<Line> polyLines) {
-		this.polyLines = polyLines;
+	private void setBorderLines(List<Line> polyLines) {
+		this.borderLines = polyLines;
 	}
 
 	@Override
-	public boolean draw() {
+	public void draw() {
 		if (!isCorrect())
-			return false;
+			throw new CompletionException(new Throwable(ERROR_BAD_BORDERLINES_STATE));
 		
-		for (Line pLine : getPolyLines()) {
-			pLine.draw();
+		for (Line borderLine : getBorderLines()) {
+			borderLine.draw();
 		}
-		
-		return true;
 	}
 
 	@Override
-	public boolean erase() {
-		for (Line pLine : getPolyLines()) {
-			pLine.erase();
+	public void erase() {
+		for (Line borderLine : getBorderLines()) {
+			borderLine.erase();
 		}
-		return true;
 	}
 
 	@Override
 	public boolean isCorrect() {
 		
-		List<Line> pLines = getPolyLines();
-		int numLines = pLines.size();
+		List<Line> borderLine = getBorderLines();
+		int numLines = borderLine.size();
 		
-		if (pLines.isEmpty() || (numLines < Polygon.MIN_NUMBER_SIDES))
+		if (borderLine.isEmpty() || (numLines < Polygon.MIN_NUMBER_SIDES))
 			return false;
 		
 		for (int i = 0; i < numLines - 1; i++) {
-			if (!(pLines.get(i).isCorrect() && pLines.get(i + 1).isCorrect()))
+			if (!(borderLine.get(i).isCorrect() && borderLine.get(i + 1).isCorrect()))
 				return false;
-			if (!(pLines.get(i).getEndPoint().equals(pLines.get(i + 1).getStartPoint())))
+			if (!(borderLine.get(i).getEndPoint().equals(borderLine.get(i + 1).getStartPoint())))
 				return false;
 		}
 		
-		if (!pLines.get(0).getStartPoint().equals(pLines.get(numLines - 1).getEndPoint()))
+		if (!borderLine.get(0).getStartPoint().equals(borderLine.get(numLines - 1).getEndPoint()))
 			return false;
 		
 		return true;
 	}
 
-	/*private boolean createLines(Point start, int numSides, int sideLength){
-		
-		
-		return false;
-	}*/
 	
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + ((polyLines == null) ? 0 : polyLines.hashCode());
+		result = prime * result + ((borderLines == null) ? 0 : borderLines.hashCode());
 		return result;
 	}
 
@@ -111,11 +101,11 @@ public class Polygon extends Element {
 			return false;
 		}
 		Polygon other = (Polygon) obj;
-		if (polyLines == null) {
-			if (other.polyLines != null) {
+		if (borderLines == null) {
+			if (other.borderLines != null) {
 				return false;
 			}
-		} else if (!polyLines.equals(other.polyLines)) {
+		} else if (!borderLines.equals(other.borderLines)) {
 			return false;
 		}
 		return true;
