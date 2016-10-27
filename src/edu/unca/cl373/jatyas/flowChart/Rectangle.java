@@ -8,20 +8,20 @@ import csci348.drawings.Drawing;
 
 public class Rectangle extends Polygon implements IFillable {
 
-	protected Point start;
-	protected int height;
-	protected int width;
-	protected List<Line> fillLines;
-
-	protected Boolean isFilled;
-
+	private Point start;
+	private int height;
+	private int width;
+	
+	private List<Line> fillLines;
+	private Boolean isFilled;
+	
 	public Rectangle(Point start, int height, int width, Drawing canvas) {
 		super(canvas);
 
-		if (height >= MIN_SIDE_LENGTH || height <= -MIN_SIDE_LENGTH) {
+		if (height < Math.abs(MIN_SIDE_LENGTH)) {
 			throw new IllegalArgumentException(ERROR_SIDE_LENGTH);
 		}
-		if (width >= MIN_SIDE_LENGTH || width <= -MIN_SIDE_LENGTH) {
+		if (width <= Math.abs(MIN_SIDE_LENGTH)) {
 			throw new IllegalArgumentException(ERROR_SIDE_LENGTH);
 		}
 
@@ -30,7 +30,6 @@ public class Rectangle extends Polygon implements IFillable {
 		this.width = width;
 		this.fillLines = new ArrayList<Line>();
 		this.isFilled = false;
-
 	}
 
 	@Override
@@ -44,6 +43,8 @@ public class Rectangle extends Polygon implements IFillable {
 		for (Line borderLine : getBorderLines()) {
 			borderLine.draw();
 		}
+		
+		super.isDrawn = true;
 	}
 
 	@Override
@@ -55,6 +56,7 @@ public class Rectangle extends Polygon implements IFillable {
 			for (Line fillLine : this.fillLines) {
 				fillLine.draw();
 			}
+			this.isFilled = true;
 		}
 	}
 
@@ -65,6 +67,9 @@ public class Rectangle extends Polygon implements IFillable {
 				fillLine.erase();
 			}
 		}
+		
+		if (super.isDrawn())
+			draw();
 	}
 
 	@Override
@@ -159,6 +164,46 @@ public class Rectangle extends Polygon implements IFillable {
 			return false;
 		}
 		return true;
+	}
+
+	public Point getStart() {
+		return start;
+	}
+
+	private void setStart(Point start) {
+		this.start = start;
+	}
+
+	public int getHeight() {
+		return height;
+	}
+
+	private void setHeight(int height) {
+		this.height = height;
+	}
+
+	public int getWidth() {
+		return width;
+	}
+
+	private void setWidth(int width) {
+		this.width = width;
+	}
+
+	public List<Line> getFillLines() {
+		return fillLines;
+	}
+
+	private void setFillLines(List<Line> fillLines) {
+		this.fillLines = fillLines;
+	}
+
+	public Boolean getIsFilled() {
+		return isFilled;
+	}
+
+	private void setIsFilled(Boolean isFilled) {
+		this.isFilled = isFilled;
 	}
 
 }

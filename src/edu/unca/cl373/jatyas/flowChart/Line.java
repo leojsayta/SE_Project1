@@ -211,5 +211,11 @@ public class Line extends Element {
 		return true;
 	}
 
+	@Override
+	public boolean isDrawn() {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
 	
 }

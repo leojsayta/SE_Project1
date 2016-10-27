@@ -41,6 +41,11 @@ public class Outline {
 		
 		Polygon poly0 = new Polygon(arr, d);
 		poly0.draw();
+		
+		Rectangle r = new Rectangle(new Point(100, 100, d), 200, 400, d);
+		r.draw();
+		r.fill();
+		r.unFill();
 	}
 	
 	public Boolean drawBox(int lng, int hght, int startX, int startY) {

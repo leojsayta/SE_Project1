@@ -22,9 +22,11 @@ public abstract class Element {
 		this.canvas = canvas;
 	}
 	
-	public abstract void draw() throws ApplicationLaunchException;
+	public abstract void draw() throws CompletionException;
 	
 	public abstract void erase();
+	
+	public abstract boolean isDrawn();
 	
 	public abstract boolean isCorrect();
 	

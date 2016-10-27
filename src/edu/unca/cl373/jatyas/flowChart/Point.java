@@ -6,7 +6,6 @@ import csci348.drawings.Drawing;
 
 public class Point extends Element {
 	
-	
 	private int x_coord;
 	private int y_coord;
 	
@@ -75,5 +74,11 @@ public class Point extends Element {
 			return false;
 		}
 		return true;
+	}
+
+	@Override
+	public boolean isDrawn() {
+		// TODO Auto-generated method stub
+		return false;
 	}
 }

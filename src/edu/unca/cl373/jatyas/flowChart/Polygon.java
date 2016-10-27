@@ -7,7 +7,8 @@ import csci348.drawings.Drawing;
 
 public class Polygon extends Element {
 	
-	protected List<Line> borderLines;
+	private List<Line> borderLines;
+	protected boolean isDrawn;
 	
 	public static final int MIN_SIDE_LENGTH = 1;
 //	public static final int MAX_NUMBER_SIDES = 4;
@@ -25,12 +26,15 @@ public class Polygon extends Element {
 
 	protected Polygon(Drawing canvas){
 		super(canvas);
+		this.borderLines = new ArrayList<Line>();
+		this.isDrawn = false;
 	}
 	
 	public Polygon(List<Line> lines, Drawing canvas) {
 		super(canvas);
 		
 		this.borderLines = lines;
+		this.isDrawn = false;
 	}
 	
 	public List<Line> getBorderLines() {
@@ -49,6 +53,8 @@ public class Polygon extends Element {
 		for (Line borderLine : getBorderLines()) {
 			borderLine.draw();
 		}
+		
+		this.isDrawn = true;
 	}
 
 	@Override
@@ -56,8 +62,15 @@ public class Polygon extends Element {
 		for (Line borderLine : getBorderLines()) {
 			borderLine.erase();
 		}
+		
+		this.isDrawn = false;
 	}
 
+	@Override
+	public boolean isDrawn() {
+		return this.isDrawn;
+	}
+	
 	@Override
 	public boolean isCorrect() {
 		
@@ -79,7 +92,6 @@ public class Polygon extends Element {
 		
 		return true;
 	}
-
 	
 	@Override
 	public int hashCode() {
@@ -110,4 +122,6 @@ public class Polygon extends Element {
 		}
 		return true;
 	}
+
+	
 }
