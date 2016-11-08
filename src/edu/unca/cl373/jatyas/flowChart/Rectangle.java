@@ -66,6 +66,7 @@ public class Rectangle extends Polygon implements IFillable {
 			for (Line fillLine : this.fillLines) {
 				fillLine.erase();
 			}
+			this.isFilled = false;
 		}
 		
 		if (super.isDrawn())

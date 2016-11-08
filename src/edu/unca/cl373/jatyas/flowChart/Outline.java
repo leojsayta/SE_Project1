@@ -21,6 +21,7 @@ public class Outline {
 		Point p0 = new Point(25, 25, d);
 		Point p1 = new Point(75, 100, d);
 		Point p2 = new Point(200, 225, d);
+		Point p3 = new Point(300, 300, d);
 		
 		p0.draw();
 		
@@ -46,6 +47,11 @@ public class Outline {
 		r.draw();
 		r.fill();
 		r.unFill();
+		
+		Circle c = new Circle(p3, 150, d);
+		c.draw();
+		c.fill();
+		c.unFill();
 	}
 	
 	public Boolean drawBox(int lng, int hght, int startX, int startY) {
