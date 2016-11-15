@@ -15,6 +15,12 @@ public class Point extends Element {
 		this.y_coord = y_Coordinate;
 	}
 	
+	public Point(Point p, Drawing canvas) {
+		super(canvas);
+		this.x_coord = p.x_coord;
+		this.y_coord = p.y_coord;
+	}
+	
 	@Override
 	public void draw() {
 		getCanvas().showPoint(getX_coord(), getY_coord());
@@ -25,25 +31,12 @@ public class Point extends Element {
 		getCanvas().hidePoint(getX_coord(), getY_coord());
 	}
 
-	@Override
-	public boolean isCorrect() {
-		return true;
-	}
-	
 	public int getX_coord() {
 		return x_coord;
 	}
 
-	private void setX_coord(int x_coord) {
-		this.x_coord = x_coord;
-	}
-
 	public int getY_coord() {
 		return y_coord;
-	}
-
-	private void setY_coord(int y_coord) {
-		this.y_coord = y_coord;
 	}
 
 	@Override

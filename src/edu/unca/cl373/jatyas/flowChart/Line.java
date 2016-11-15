@@ -26,6 +26,11 @@ public class Line extends Element {
 		this.endPoint = endPoint;
 		
 		this.points = new ArrayList<Point>();
+		
+		if (isCorrect())
+			createPoints();
+		else 
+			throw new CompletionException(new Throwable(Line.ERROR_BAD_LINE_POINTS));
 	}
 	
 	@Override
@@ -47,7 +52,6 @@ public class Line extends Element {
 		eraseLine();
 	}
 	
-	@Override
 	public boolean isCorrect() {
 		if (getStartPoint().equals(null) || getEndPoint().equals(null))
 			return false;
@@ -145,24 +149,12 @@ public class Line extends Element {
 		return startPoint;
 	}
 
-	private void setStartPoint(Point start) {
-		this.startPoint = start;
-	}
-
 	public Point getEndPoint() {
 		return endPoint;
 	}
 
-	private void setEndPoint(Point end) {
-		this.endPoint = end;
-	}
-
-	public List<Point> getPoints() {
+	protected List<Point> getPoints() {
 		return points;
-	}
-
-	private void setPoints(List<Point> points) {
-		this.points = points;
 	}
 
 	@Override

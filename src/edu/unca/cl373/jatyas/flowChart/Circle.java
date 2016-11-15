@@ -14,16 +14,7 @@ public class Circle extends Element implements IFillable {
 	private List<Circle> circles;
 	private Boolean isFilled;
 	protected boolean isDrawn;
-	
-	protected Circle() {
-		// TODO Auto-generated constructor stub
-	}
 
-	public Circle(Drawing canvas) {
-		super(canvas);
-		// TODO Auto-generated constructor stub
-	}
-	
 	public Circle(Point center, int radius, Drawing canvas) {
 		super(canvas);
 		this.centerPoint = center;
@@ -37,32 +28,16 @@ public class Circle extends Element implements IFillable {
 		return centerPoint;
 	}
 
-	private void setCenterPoint(Point centerPoint) {
-		this.centerPoint = centerPoint;
-	}
-
 	public int getRadius() {
 		return radius;
 	}
 
-	private void setRadius(int radius) {
-		this.radius = radius;
-	}
-
-	public List<Point> getBorderPoints() {
+	protected List<Point> getBorderPoints() {
 		return borderPoints;
 	}
 
-	private void setBorderPoints(List<Point> borderPoints) {
-		this.borderPoints = borderPoints;
-	}
-
-	public List<Circle> getCircles() {
+	protected List<Circle> getCircles() {
 		return circles;
-	}
-
-	private void setCircles(List<Circle> circles) {
-		this.circles = circles;
 	}
 
 	@Override
@@ -120,24 +95,6 @@ public class Circle extends Element implements IFillable {
 		return this.isDrawn;
 	}
 
-	@Override
-	public boolean isCorrect() {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	@Override
-	public int hashCode() {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-	@Override
-	public boolean equals(Object obj) {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
 	// https://en.wikipedia.org/wiki/Midpoint_circle_algorithm#Algorithm
 	private void drawCircle(int center_X, int center_Y, int radius, List<Point> circlePoints)
 	{
@@ -173,5 +130,57 @@ public class Circle extends Element implements IFillable {
 			getCircles().add(c);
 			drawCircle(getCenterPoint().getX_coord(), getCenterPoint().getY_coord(), r, c.getBorderPoints());
 		}
+	}
+
+	
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((borderPoints == null) ? 0 : borderPoints.hashCode());
+		result = prime * result + ((centerPoint == null) ? 0 : centerPoint.hashCode());
+		result = prime * result + ((circles == null) ? 0 : circles.hashCode());
+		result = prime * result + radius;
+		return result;
+	}
+
+	
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj) {
+			return true;
+		}
+		if (obj == null) {
+			return false;
+		}
+		if (!(obj instanceof Circle)) {
+			return false;
+		}
+		Circle other = (Circle) obj;
+		if (borderPoints == null) {
+			if (other.borderPoints != null) {
+				return false;
+			}
+		} else if (!borderPoints.equals(other.borderPoints)) {
+			return false;
+		}
+		if (centerPoint == null) {
+			if (other.centerPoint != null) {
+				return false;
+			}
+		} else if (!centerPoint.equals(other.centerPoint)) {
+			return false;
+		}
+		if (circles == null) {
+			if (other.circles != null) {
+				return false;
+			}
+		} else if (!circles.equals(other.circles)) {
+			return false;
+		}
+		if (radius != other.radius) {
+			return false;
+		}
+		return true;
 	}
 }

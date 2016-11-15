@@ -6,7 +6,7 @@ import java.util.concurrent.CompletionException;
 import csci348.drawings.Drawing;
 import sun.net.www.ApplicationLaunchException;
 
-public abstract class Element {
+public abstract class Element implements IDrawable {
 	
 	public static final String ERROR_DRAWING_CANVAS_IS_NULL = "The drawing canvas does not exist.";
 	
@@ -21,14 +21,6 @@ public abstract class Element {
 		
 		this.canvas = canvas;
 	}
-	
-	public abstract void draw() throws CompletionException;
-	
-	public abstract void erase();
-	
-	public abstract boolean isDrawn();
-	
-	public abstract boolean isCorrect();
 	
 	public Drawing getCanvas() {
 		return canvas;

@@ -171,40 +171,20 @@ public class Rectangle extends Polygon implements IFillable {
 		return start;
 	}
 
-	private void setStart(Point start) {
-		this.start = start;
-	}
-
 	public int getHeight() {
 		return height;
-	}
-
-	private void setHeight(int height) {
-		this.height = height;
 	}
 
 	public int getWidth() {
 		return width;
 	}
 
-	private void setWidth(int width) {
-		this.width = width;
-	}
-
-	public List<Line> getFillLines() {
+	protected List<Line> getFillLines() {
 		return fillLines;
-	}
-
-	private void setFillLines(List<Line> fillLines) {
-		this.fillLines = fillLines;
 	}
 
 	public Boolean getIsFilled() {
 		return isFilled;
-	}
-
-	private void setIsFilled(Boolean isFilled) {
-		this.isFilled = isFilled;
 	}
 
 }

@@ -37,12 +37,8 @@ public class Polygon extends Element {
 		this.isDrawn = false;
 	}
 	
-	public List<Line> getBorderLines() {
+	protected List<Line> getBorderLines() {
 		return borderLines;
-	}
-
-	private void setBorderLines(List<Line> polyLines) {
-		this.borderLines = polyLines;
 	}
 
 	@Override
@@ -71,7 +67,6 @@ public class Polygon extends Element {
 		return this.isDrawn;
 	}
 	
-	@Override
 	public boolean isCorrect() {
 		
 		List<Line> borderLine = getBorderLines();
