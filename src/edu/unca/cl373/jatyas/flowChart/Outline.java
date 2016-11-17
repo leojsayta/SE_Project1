@@ -59,6 +59,13 @@ public class Outline {
 //		t.erase();
 		t.fill();
 //		t.unFill();
+		
+		Diamond dia = new Diamond(p3, 100, d);
+//		dia.draw();
+//		dia.erase();
+		dia.fill();
+//		dia.unFill();
+		
 	}
 	
 	public Boolean drawBox(int lng, int hght, int startX, int startY) {

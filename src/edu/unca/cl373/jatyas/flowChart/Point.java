@@ -4,7 +4,7 @@ import java.util.Objects;
 
 import csci348.drawings.Drawing;
 
-public class Point extends Element {
+public class Point extends Element implements IDrawable  {
 	
 	private int x_coord;
 	private int y_coord;

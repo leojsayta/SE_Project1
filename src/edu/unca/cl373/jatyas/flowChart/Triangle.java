@@ -147,4 +147,45 @@ public class Triangle extends Polygon implements IFillable {
 
 		return true;
 	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = super.hashCode();
+		result = prime * result + ((baseCenterPoint == null) ? 0 : baseCenterPoint.hashCode());
+		result = prime * result + ((bottomSide == null) ? 0 : bottomSide.hashCode());
+		result = prime * result + ((direction == null) ? 0 : direction.hashCode());
+		result = prime * result + ((leftSide == null) ? 0 : leftSide.hashCode());
+		result = prime * result + ((rightSide == null) ? 0 : rightSide.hashCode());
+		result = prime * result + sideLength;
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj) {
+			return true;
+		}
+		if (!super.equals(obj)) {
+			return false;
+		}
+		if (!(obj instanceof Triangle)) {
+			return false;
+		}
+		Triangle other = (Triangle) obj;
+		if (baseCenterPoint == null) {
+			if (other.baseCenterPoint != null) {
+				return false;
+			}
+		} else if (!baseCenterPoint.equals(other.baseCenterPoint)) {
+			return false;
+		}
+		if (direction != other.direction) {
+			return false;
+		}
+		if (sideLength != other.sideLength) {
+			return false;
+		}
+		return true;
+	}
 }

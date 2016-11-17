@@ -6,7 +6,7 @@ import java.util.concurrent.CompletionException;
 
 import csci348.drawings.Drawing;
 
-public class Circle extends Element implements IFillable {
+public class Circle extends Element implements IDrawable, IFillable {
 	
 	private Point centerPoint;
 	private int radius;
@@ -157,25 +157,11 @@ public class Circle extends Element implements IFillable {
 			return false;
 		}
 		Circle other = (Circle) obj;
-		if (borderPoints == null) {
-			if (other.borderPoints != null) {
-				return false;
-			}
-		} else if (!borderPoints.equals(other.borderPoints)) {
-			return false;
-		}
 		if (centerPoint == null) {
 			if (other.centerPoint != null) {
 				return false;
 			}
 		} else if (!centerPoint.equals(other.centerPoint)) {
-			return false;
-		}
-		if (circles == null) {
-			if (other.circles != null) {
-				return false;
-			}
-		} else if (!circles.equals(other.circles)) {
 			return false;
 		}
 		if (radius != other.radius) {

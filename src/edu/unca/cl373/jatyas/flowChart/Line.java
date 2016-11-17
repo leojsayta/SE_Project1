@@ -5,7 +5,7 @@ import java.util.concurrent.CompletionException;
 
 import csci348.drawings.Drawing;
 
-public class Line extends Element {
+public class Line extends Element implements IDrawable {
 	
 	public static final String ERROR_BAD_LINE_POINTS = "The points of the line are incorrectly formed.";
 
@@ -184,13 +184,6 @@ public class Line extends Element {
 				return false;
 			}
 		} else if (!endPoint.equals(other.endPoint)) {
-			return false;
-		}
-		if (points == null) {
-			if (other.points != null) {
-				return false;
-			}
-		} else if (!points.equals(other.points)) {
 			return false;
 		}
 		if (startPoint == null) {

@@ -5,9 +5,6 @@ import java.util.concurrent.CompletionException;
 public interface IDrawable {
 
 	public void draw() throws CompletionException;
-	
 	public void erase();
-	
 	public boolean isDrawn();
-	
 }

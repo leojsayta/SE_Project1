@@ -137,21 +137,7 @@ public class Rectangle extends Polygon implements IFillable {
 			return false;
 		}
 		Rectangle other = (Rectangle) obj;
-		if (fillLines == null) {
-			if (other.fillLines != null) {
-				return false;
-			}
-		} else if (!fillLines.equals(other.fillLines)) {
-			return false;
-		}
 		if (height != other.height) {
-			return false;
-		}
-		if (isFilled == null) {
-			if (other.isFilled != null) {
-				return false;
-			}
-		} else if (!isFilled.equals(other.isFilled)) {
 			return false;
 		}
 		if (start == null) {

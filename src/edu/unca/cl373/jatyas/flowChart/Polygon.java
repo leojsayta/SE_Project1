@@ -5,23 +5,17 @@ import java.util.concurrent.CompletionException;
 
 import csci348.drawings.Drawing;
 
-public class Polygon extends Element {
+public class Polygon extends Element implements IDrawable {
 	
 	private List<Line> borderLines;
 	protected boolean isDrawn;
 	
 	public static final int MIN_SIDE_LENGTH = 1;
-//	public static final int MAX_NUMBER_SIDES = 4;
 	public static final int MIN_NUMBER_SIDES = 3;
-//	public static final int NUMBER_SIDES = 4;
 	public static final String ERROR_MIN_SIDE_NUM = "The number of sides must be greater than or equal to "
 			+ String.valueOf(MIN_NUMBER_SIDES) + ".";
 	public static final String ERROR_SIDE_LENGTH = "The length of each side must must be greater than or equal to "
 			+ String.valueOf(MIN_SIDE_LENGTH) + ".";
-//	public static final String ERROR_MAX_SIDE_NUM = "The number of sides must be less than or equal to "
-//			+ String.valueOf(MAX_NUMBER_SIDES) + ".";
-//	public static final String ERROR_NUMBER_SIDES = "The number of sides must be less than or equal to "
-//			+ String.valueOf(NUMBER_SIDES) + ".";
 	public static final String ERROR_BAD_BORDERLINES_STATE = "The border lines of the shape are incorrectly formed.";
 
 	protected Polygon(Drawing canvas){
