@@ -15,16 +15,18 @@ public class Triangle extends Polygon implements IFillable {
 	private boolean filled;
 	private List<Line> fillLines;
 	private Direction direction;
+	private int height;
 
-	private Line leftSide;
-	private Line rightSide;
-	private Line bottomSide;
+	private Line lesserSide;
+	private Line greaterSide;
+	private Line baseSide;
 
 	public Triangle(Point baseCenterPoint, int sideLength, Direction direction, Drawing canvas) {
 		super(canvas);
 		this.baseCenterPoint = baseCenterPoint;
 		this.sideLength = sideLength;
 		this.direction = direction;
+		this.height = -1;
 
 		this.fillLines = new ArrayList<Line>();
 		this.filled = false;
@@ -54,6 +56,8 @@ public class Triangle extends Polygon implements IFillable {
 	@Override
 	public void fill() {
 		if (!isFilled()) {
+			if (getBorderLines().isEmpty())
+				createBorderLines();
 			if (this.fillLines.isEmpty())
 				createFillLines();
 
@@ -77,6 +81,18 @@ public class Triangle extends Polygon implements IFillable {
 			draw();
 	}
 
+	public Line getLesserSide() {
+		return lesserSide;
+	}
+
+	public Line getGreaterSide() {
+		return greaterSide;
+	}
+
+	public Line getBaseSide() {
+		return baseSide;
+	}
+
 	public int getSideLength() {
 		return sideLength;
 	}
@@ -89,58 +105,105 @@ public class Triangle extends Polygon implements IFillable {
 		return fillLines;
 	}
 
+	public int getHeight() {
+		if (this.height == -1)
+			this.height = (int) Math.round(((double) getSideLength() / 2.0) * SQ_ROOT_OF_THREE);
+		return this.height;
+	}
+
 	public Direction getDirection() {
 		return direction;
 	}
 
 	private boolean createBorderLines() {
-		Point bottomLeftP;
-		Point apexP;
-		Point bottomRightP;
+		Point apexA;
+		Point apexB;
+		Point apexC;
 
-		double height = ((double) getSideLength() / 2.0) * SQ_ROOT_OF_THREE;
+//		double height = ((double) getSideLength() / 2.0) * SQ_ROOT_OF_THREE;
 
-		int bottomL_x = getBaseCenterPoint().getX_coord() - getSideLength() / 2;
-		int bottomR_x = bottomL_x + getSideLength();
-		int top_y;
-		if (getDirection() == Direction.SOUTH) {
-			top_y = getBaseCenterPoint().getY_coord() + (int) Math.round(height);
-		} else {
-			top_y = getBaseCenterPoint().getY_coord() - (int) Math.round(height);
+		int baseLeast_X;
+		int baseLeast_Y;
+		int baseGreatest_X;
+		int baseGreatest_Y;
+		int top_X;
+		int top_Y;
+		
+		if (getDirection() == direction.NORTH || getDirection() == Direction.SOUTH) {
+			baseLeast_X = getBaseCenterPoint().getX_coord() - getSideLength() / 2;
+			baseGreatest_X = baseLeast_X + getSideLength();
+			
+			if (getDirection() == direction.NORTH) {
+				top_Y = getBaseCenterPoint().getY_coord() - getHeight();
+			}
+			else {	// SOUTH
+				top_Y = getBaseCenterPoint().getY_coord() + getHeight();
+			}
+			
+			apexA = new Point(baseLeast_X, getBaseCenterPoint().getY_coord(), getCanvas());
+			apexB = new Point(getBaseCenterPoint().getX_coord(), top_Y, getCanvas());
+			apexC = new Point(baseGreatest_X, getBaseCenterPoint().getY_coord(), getCanvas());
+			
+			this.lesserSide = new Line(apexA, apexB, getCanvas());
+			this.greaterSide = new Line(apexB, apexC, getCanvas());
+			this.baseSide = new Line(apexC, apexA, getCanvas());
 		}
-
-		bottomLeftP = new Point(bottomL_x, getBaseCenterPoint().getY_coord(), getCanvas());
-		bottomRightP = new Point(bottomR_x, getBaseCenterPoint().getY_coord(), getCanvas());
-		apexP = new Point(getBaseCenterPoint().getX_coord(), top_y, getCanvas());
-
-		leftSide = new Line(bottomLeftP, apexP, getCanvas());
-		rightSide = new Line(apexP, bottomRightP, getCanvas());
-		bottomSide = new Line(bottomRightP, bottomLeftP, getCanvas());
-
-		getBorderLines().add(leftSide);
-		getBorderLines().add(rightSide);
-		getBorderLines().add(bottomSide);
+		else {	// EAST or WEST
+			baseLeast_Y = getBaseCenterPoint().getY_coord() - getSideLength() / 2;
+			baseGreatest_Y = baseLeast_Y + getSideLength();
+			
+			if (getDirection() == direction.EAST) {
+				top_X = getBaseCenterPoint().getX_coord() + getHeight();
+			}
+			else {	// WEST
+				top_X = getBaseCenterPoint().getX_coord() - getHeight();
+			}
+			
+			apexA = new Point(getBaseCenterPoint().getX_coord(), baseLeast_Y, getCanvas());
+			apexB = new Point(top_X, getBaseCenterPoint().getY_coord(), getCanvas());
+			apexC = new Point(getBaseCenterPoint().getX_coord(), baseGreatest_Y, getCanvas());
+			
+			this.lesserSide = new Line(apexA, apexB, getCanvas());
+			this.greaterSide = new Line(apexB, apexC, getCanvas());
+			this.baseSide = new Line(apexC, apexA, getCanvas());
+		}
+		
+		getBorderLines().add(lesserSide);
+		getBorderLines().add(greaterSide);
+		getBorderLines().add(baseSide);
 
 		return true;
 	}
 
 	private boolean createFillLines() {
-		Point leftEndPoint;
-		Point rightEndPoint;
+		Point lesserEndPoint;
+		Point greaterEndPoint;
 		Line fillLine;
 		
-		int leftX, rightX, y;
-		int centerX = getBaseCenterPoint().getX_coord();
-		for (Point leftPoint : this.leftSide.getPoints()) {
-			leftX = leftPoint.getX_coord();
-			y = leftPoint.getY_coord();
-			rightX = (centerX - leftX) * 2 + leftX;
-
-			leftEndPoint = new Point(leftPoint, getCanvas());
-			rightEndPoint = new Point(rightX, y, getCanvas());
-
-			if (leftX != rightX) {
-				fillLine = new Line(leftEndPoint, rightEndPoint, getCanvas());
+		int lesser_X_Val, lesser_Y_Val, centerVal, greater_X_Val, greater_Y_Val;
+		
+		if (getDirection() == Direction.NORTH || getDirection() == Direction.SOUTH)
+			centerVal = getBaseCenterPoint().getX_coord();
+		else	//EAST or WEST pointing
+			centerVal = getBaseCenterPoint().getY_coord();
+		
+		for (Point pnt : this.lesserSide.getPoints()) {
+			
+			lesserEndPoint = new Point(pnt, getCanvas());
+			
+			if (getDirection() == Direction.NORTH || getDirection() == Direction.SOUTH) {	// triangles point extends along Y-axis
+				lesser_X_Val = pnt.getX_coord();
+				greater_X_Val = (centerVal - lesser_X_Val) * 2 + lesser_X_Val;
+				greaterEndPoint = new Point(greater_X_Val, pnt.getY_coord(), getCanvas());
+			}
+			else {	// EAST or WEST:  triangle's point extends along X-axis
+				lesser_Y_Val = pnt.getY_coord();
+				greater_Y_Val = (centerVal - lesser_Y_Val) * 2 + lesser_Y_Val;
+				greaterEndPoint = new Point(pnt.getX_coord(), greater_Y_Val, getCanvas());
+			}
+				
+			if (!lesserEndPoint.equals(greaterEndPoint)) {
+				fillLine = new Line(lesserEndPoint, greaterEndPoint, getCanvas());
 				getFillLines().add(fillLine);
 			}
 		}
@@ -153,10 +216,10 @@ public class Triangle extends Polygon implements IFillable {
 		final int prime = 31;
 		int result = super.hashCode();
 		result = prime * result + ((baseCenterPoint == null) ? 0 : baseCenterPoint.hashCode());
-		result = prime * result + ((bottomSide == null) ? 0 : bottomSide.hashCode());
+		result = prime * result + ((baseSide == null) ? 0 : baseSide.hashCode());
 		result = prime * result + ((direction == null) ? 0 : direction.hashCode());
-		result = prime * result + ((leftSide == null) ? 0 : leftSide.hashCode());
-		result = prime * result + ((rightSide == null) ? 0 : rightSide.hashCode());
+		result = prime * result + ((lesserSide == null) ? 0 : lesserSide.hashCode());
+		result = prime * result + ((greaterSide == null) ? 0 : greaterSide.hashCode());
 		result = prime * result + sideLength;
 		return result;
 	}

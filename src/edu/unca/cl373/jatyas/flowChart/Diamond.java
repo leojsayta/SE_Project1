@@ -29,6 +29,9 @@ public class Diamond extends Element implements IFillable {
 	public void draw() {
 		this.top.draw();
 		this.bottom.draw();
+		
+		this.top.getBaseSide().erase();
+		this.bottom.getBaseSide().erase();
 
 		this.isDrawn = true;
 	}
